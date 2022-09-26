@@ -1,0 +1,45 @@
+@import 'variables';
+@import 'home';
+@import 'login';
+@import 'header';
+@import 'comingSoon';
+@import 'animate-header';
+@import 'bootstrap/bootstrap';
+@import 'bootstrap/variables';
+@import 'bootstrap/mixins';
+
+* {
+    padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+body {
+    min-height: 100%;
+    position: relative;
+}
+
+.footer-bs {
+position: absolute;
+width: 100%;
+min-height: 320px;
+bottom: 100%;
+left: 0;
+}
+
+.text-shadow {
+    text-shadow: 1px 1px black;
+}
+
+// .form-container
+
+h1 {
+    color: $black-color;
+}
+
+// .container {
+//     height: 100vh;
+// }
