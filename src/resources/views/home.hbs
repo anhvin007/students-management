@@ -8,11 +8,11 @@
         <main class="d-flex flex-column">
             <h1 class="visually-hidden">Heroes examples</h1>
     
-            {{!-- Giới thiệu --}}
-            <div class="px-4 pb-5 pt-4 mb-5 text-center rounded-3 border shadow-lg">
+            {{!-- Thông tin --}}
+            <div class="px-4 pb-5 pt-4 mb-5 text-center rounded-3 border shadow-lg" id="thongtin">
                 {{!-- <img class="logo-rotate rounded-pill border rounded-4 shadow-lg d-block mx-auto mb-4" src="/img/download.png" alt="" --}}
                     {{!-- width="225" height="225"> --}}
-                <h1 class="display-5 fw-bold">TUY PHƯỚC 1</h1>
+                <h2 class="display-5 fw-bold">Thông tin</h2>
                 <div class="col-lg-6 mx-auto">
                     {{!-- <h2 class="display-8 fw-bold lh-1 mb-5">TUY PHƯỚC 1</h2> --}}
                     <p class="mt-4 lead mb-4 fs-4">Đây là web hệ thống nhận diện khuôn mặt diểm danh sỉ số lớp và quản lý danh
@@ -121,14 +121,14 @@
             <div class="b-example-divider"></div>
     
             {{!-- Danh sách học sinh --}}
-            <div class="container my-5">
+            <div class="container my-5" id="danhsach">
                 <div class="row p-4 pb-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-3 p-lg-5 pt-lg-3 tex-lg-start ">
                         <h1 class="display-8 fw-bold lh-1 mb-4">Danh sách học sinh</h1>
                         <p class="fs-5">Danh sách học sinh các khối trường THPT số 1 Tuy Phước. Được lưu trữ số báo danh, họ
                             và tên, lớp và khối.</p>
                         <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <form action="/coming-soon">
+                            <form action="/coming-soon" target="_blank">
                                 <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Xem</button>
                             </form>
                         </div>
@@ -142,7 +142,7 @@
             <div class="b-example-divider"></div>
     
             {{!-- Diểm Danh --}}
-            <div class="container my-5">
+            <div class="container my-5" id="diemdanh">
                 <div class="row p-4 pb-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-3 p-lg-5 pt-lg-3 tex-lg-start ">
                         <h1 class="display-8 fw-bold lh-1 mb-4">Điểm danh sỉ số</h1>
@@ -165,7 +165,7 @@
         </main>
     </div>
     
-    {{!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> --}}s
+    {{!-- <script src="../assets/dist/js/bootstrap.bundle.min.js"></script> --}}
     {{> footer}}
 </body>
 

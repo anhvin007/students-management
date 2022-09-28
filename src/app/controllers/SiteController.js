@@ -15,6 +15,11 @@ class SiteController {
         res.render('introduce');
     }
 
+    // GET /private
+    private(req, res) {
+        
+    }
+
 }
 
 module.exports = new SiteController;
