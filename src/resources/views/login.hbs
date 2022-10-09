@@ -1,4 +1,132 @@
+{{!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> --}}
+
+{{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"
+    integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
+
+<script src="http://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+    crossorigin="anonymous"></script>
+<script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.1/dist/jquery.validate.js"></script>
+
+
 <title>TP1 - Đăng nhập</title>
+
+
+<style>
+
+@import url(https://fonts.googleapis.com/css?family=Calibri:400,300,700);
+
+body {
+    background: linear-gradient(to bottom, rgba(4, 4, 172, 0.63), rgba(151, 44, 201, 0.589));
+    height: 100vh;
+    vertical-align: middle;
+    display: flex;
+    font-family: 'Calibri', sans-serif !important
+}
+
+.mt-100 {
+    margin-top: 100px
+}
+
+    .bg {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+.card {
+    border-radius: 3vh;
+    margin: auto;
+    max-width: 380px;
+    padding: 7vh 6vh;
+    align-items: center;
+    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+}
+
+.form-control {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+.form-group input {
+    border: none;
+}
+
+.form-label {
+    color: #21ccff;
+
+}
+
+@media(max-width:767px) {
+    .card {
+        width: 90vw
+    }
+}
+
+.card-img {
+    padding: 20px 0;
+    width: 40%
+}
+
+.card-img img {
+    opacity: 0.7
+}
+
+.card-title {
+    margin-bottom: unset
+}
+
+.error {
+    font-size: 14px;
+    color: red;
+    text-shadow: rgba(0, 0, 0, 0.19);
+}
+
+.card-title p {
+    color: rgb(29, 226, 226);
+    font-weight: 900;
+    font-size: 30px;
+    margin-bottom: unset
+}
+
+.card-text p {
+    color: grey;
+    font-size: 25px;
+    text-align: center;
+    padding: 3vh 0;
+    font-weight: lighter
+}
+
+.btn {
+    width: 100%;
+    border-radius: 25px;
+    color: white;
+    font-size: 20px;
+    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+}
+
+.btn:focus {
+    box-shadow: none;
+    outline: none;
+    box-shadow: none;
+    color: white;
+    -webkit-box-shadow: none;
+    -webkit-user-select: none;
+    transition: none
+}
+
+.btn:hover {
+    color: white
+        background-color: #99ffec2b;
+}
+
+</style>
+
 
 
 <body class="bg">
@@ -8,7 +136,7 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
 
                 <!-- Form sign in -->
-                <form action="#" method="POST" class="form-container" id="form-1">
+                <form action="/login" autocomplete="off" method="POST" class="form-container" id="login-form">
                     <h3 class="heading text-shadow">Đăng nhập</h3>
                     {{!-- <p class="desc">Example</p> --}}
 
@@ -37,7 +165,39 @@
         </div>
     </div>
 
-    {{!-- <script type="module" src="./main.js"></script> --}}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        //Khi bàn phím được nhấn và thả ra thì sẽ chạy phương thức này
+        $("#login-form").validate({
+            rules: {
+                username: {
+                    required: true,
+                    minlength: 6,
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                },
+                checkbox: "required"
+            },
+            messages: {
+                username: {
+                    required: "Vui lòng nhập tên!",
+                    minlength: "Độ dài tối thiểu 6 kí tự",
+                },
+                password: {
+                    required: "Vui lòng nhập mật khẩu!",
+                    minlength: "Độ dài tối thiểu 6 kí tự",
+                },
+                checkbox: "Xác nhận Admin đẹp zai"
+            }
+        });
+    });
+</script>
+
 </body>
+
+
 
 

@@ -1,7 +1,8 @@
-const AccountClassModel = require("../../config/models/account/Account");
-const jwt = require("jsonwebtoken");
+const authController = require('./handle/AuthHandle');
+
 
 class LoginController {
+
 
     // GET login
     index(req, res, next) {
@@ -10,28 +11,12 @@ class LoginController {
 
     // POST login
     login(req, res, next) {
-        const username = req.body.username;
-        const password = req.body.password;
-        
-        AccountClassModel.findOne({
-            username: username,
-            password: password
-        })
-        .then(data => {
-            console.log(data);
-            if(data) {
-                const token = jwt.sign({
-                    _id: data._id,
-                }, 'mk');
-                return 
-            }
-            else {
-                return res.json('Thất bại');
-            }
-        })
-        .catch(err => {
-            res.status(500).json('Lỗi server');
-        })
+
+        authController.login(req, res, next);
+
+        // res.next();
+        // res.json('you are admin');
+
     }
 
 }

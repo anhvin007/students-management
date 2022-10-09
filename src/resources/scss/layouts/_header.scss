@@ -216,7 +216,7 @@ h1 {
 }
 
 p {
-  text-align: center;
+  // text-align: center;
   margin: 0;
   padding-top: 10px;
   opacity: 1;
@@ -471,6 +471,13 @@ body.hero-anime #switch {
   background-color: rgba(129, 103, 169, .6);
 }
 
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 body.dark {
   color: #fff;
   background-color: #1f2029;
@@ -550,32 +557,7 @@ body.dark .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
     display: none;
   }
 
-  .nav-item::before {
-    position: absolute;
-    display: block;
-    top: 15px;
-    left: 0;
-    width: 11px;
-    height: 1px;
-    content: "";
-    border: none;
-    background-color: #000;
-    vertical-align: 0;
-  }
 
-  .dropdown-toggle::after {
-    position: absolute;
-    display: block;
-    top: 10px;
-    left: -23px;
-    width: 1px;
-    height: 11px;
-    content: "";
-    border: none;
-    background-color: #000;
-    vertical-align: 0;
-    transition: all 200ms linear;
-  }
 
   .dropdown-toggle[aria-expanded="true"]::after {
     transform: rotate(90deg);

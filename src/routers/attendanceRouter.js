@@ -1,9 +1,12 @@
 const express = require('express');
 const attendanceRouter = express.Router();
 const attendanceController = require('../app/controllers/AttendanceController')
+const privateRouter = require('./privateRouter');
 
 
-attendanceRouter.get('/', attendanceController.index);
+
+// GET /attendance
+attendanceRouter.get('/', privateRouter, attendanceController.index);
 
 
 

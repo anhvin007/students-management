@@ -1,23 +1,104 @@
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const handlebars = require('express-handlebars');
 const route = require('./routers/index.js');
 const bodyParser = require('body-parser');
 const db = require('./config/db/index');
+// const session = require('express-session');
 const isProduction = process.env.NODE_ENV === "production";
 const dotenv = require('dotenv');
 dotenv.config();
-
+const app = express();
+// const socketio = require('socket.io');
+const http = require("http");
 const port = process.env.PORT || 7000;
 
+// Use static
+app.use(express.static(path.join(__dirname, 'public')));
 
-const app = express();
+// Attached http server to the socket.io
+const server = http.createServer(app);
+const io = require('socket.io')(server);
 
+// Handle socket.io
+const { addUser, removeUser, getUser,
+    getUsersInRoom } = require("./js/page/kenhChatHandle");
+var countUserOnline = 2;
+io.on('connection', (socket) => {
+    console.log('user connected');    
+    countUserOnline++;
+    // generate userId
+    socket.on("join", ({name, room}, callback) => {
+        const { error, user } = addUser(
+            { id: socket.id, name, room });
+        if (error) {
+            countUserOnline--;
+            return callback(error);
+        }   
+
+        // Emit will send message to the user
+        // who had joined
+        socket.emit('messageStatus', {
+            user: 'bot004', text:
+                `Kết nối thành công kênh ${user.room}.`
+        }, countUserOnline);
+
+        // Broadcast will send message to everyone
+        // in the room except the joined user
+        socket.broadcast.to(user.room)
+            .emit('messageStatus', {
+                user: "bot007",
+                text: `"${user.name}" đã tham gia kênh!`
+            }, countUserOnline);
+
+        socket.join(user.room);
+
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
+    });
+
+    // Handle message chat
+    socket.on('sendMessage', (message) => {
+
+        const user = getUser(socket.id);
+        io.emit('message',
+            { user: user.name, text: message });
+
+        io.to(user.room).emit('roomData', {
+            room: user.room,
+            users: getUsersInRoom(user.room)
+        });
+    })
+
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+        const users = removeUser();
+        const index = users.findIndex(elem => elem.id === socket.id);
+        const user = users[index];
+        removeUser(index);
+        countUserOnline--;
+        if(user) {
+            io.emit('messageStatus',
+                    {
+                        user: 'bot009', text:
+                            `"${user.name}"  đã rời kênh!`
+                    }, countUserOnline);
+        }
+    })
+
+    // Handle user typing
+    socket.on("typing", function (data) {
+        socket.broadcast.emit("typing", data);
+    });
+});
 
 // Connect database
 db.connect();
-
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -33,6 +114,12 @@ const allowCrossDomain = function (req, res, next) {
     next();
 }
 
+// Use cors
+app.use(cors());
+
+// Use cookie-parser
+app.use(cookieParser());
+
 // Use logger 
 app.use(isProduction ? morgan('combined', { stream: accessLogStream }) : morgan('dev'));
 
@@ -43,19 +130,17 @@ app.engine('hbs', handlebars.engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
 
-// Use static
-app.use(express.static(path.join(__dirname, 'public')));
+// Use express-session
+// app.use(session({
+//     secret: process.env.SESSION_SECRET,
+//     resave: true,
+//     saveUninitialized: true,
+// }));
 
 // Use router
 route(app);
 
-
-// Handle 404 Not found
-app.use((req, res, next) => {
-    res.status(404).send("Lỗi 404 không tìm thấy, vui lòng quay lại.")
-})
-
 // Listen port
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server is listening on port ${port}`)
 });

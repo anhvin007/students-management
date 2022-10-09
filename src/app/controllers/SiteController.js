@@ -1,3 +1,4 @@
+
 class SiteController {
 
     // GET /
@@ -15,9 +16,12 @@ class SiteController {
         res.render('introduce');
     }
 
-    // GET /private
-    private(req, res) {
-        
+    chatRealTime(req, res) {
+        res.render('chatRealTime');
+    }
+
+    kenhChat(req, res) {
+        res.render('kenhChat');
     }
 
 }

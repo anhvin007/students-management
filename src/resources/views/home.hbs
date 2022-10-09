@@ -1,5 +1,10 @@
 <title>TP1 - Trang chủ</title>
 
+<style>
+    #custom-cards {
+        box-shadow: rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px;
+    }
+</style>
 
 <body class="flex-column h-100">
     
@@ -7,19 +12,22 @@
         {{> header}}
         <main class="d-flex flex-column">
             <h1 class="visually-hidden">Heroes examples</h1>
-    
+
+            <div class="b-example-divider mb-5" id="thongtin"></div>
+            <div class="b-example-divider mb-5"></div>
+
             {{!-- Thông tin --}}
-            <div class="px-4 pb-5 pt-4 mb-5 text-center rounded-3 border shadow-lg" id="thongtin">
+            <div class="px-4 pb-5 pt-4 mb-5 rounded-3 border shadow-lg">
                 {{!-- <img class="logo-rotate rounded-pill border rounded-4 shadow-lg d-block mx-auto mb-4" src="/img/download.png" alt="" --}}
                     {{!-- width="225" height="225"> --}}
-                <h2 class="display-5 fw-bold">Thông tin</h2>
+                <h2 class="display-5 fw-bold text-center">Thông tin</h2>
                 <div class="col-lg-6 mx-auto">
                     {{!-- <h2 class="display-8 fw-bold lh-1 mb-5">TUY PHƯỚC 1</h2> --}}
                     <p class="mt-4 lead mb-4 fs-4">Đây là web hệ thống nhận diện khuôn mặt diểm danh sỉ số lớp và quản lý danh
                         sách học sinh của trường TP1.
                         Là sản phẩm dự thi khoa học kỹ thuật mong muốn trong tương lai được sử dụng (hiện tại vẫn đang trong
                         tình trạng phát triển). Xem qua website chính thức của trường Tuy Phước 1.</p>
-                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center text-center">
                         <form action="http://tthptso1tuyphuoc.edu.vn/">
                             <button type="submit" class="btn btn-primary btn-lg px-4 gap-3">Xem trang</button>
                         </form>
@@ -28,7 +36,8 @@
                 </div>
             </div>
     
-            <div class="b-example-divider"></div>
+            <div class="b-example-divider mb-5" id="images-school"></div>
+            <div class="b-example-divider mb-5"></div>
     
             {{!-- Ảnh --}}
             <div class="rounded-3 border shadow-lg container px-4 py-5" id="custom-cards">
@@ -118,43 +127,43 @@
                 </div>
             </div>
     
-            <div class="b-example-divider"></div>
+            <div class="b-example-divider mb-5" id="danhsach"></div>
     
             {{!-- Danh sách học sinh --}}
-            <div class="container my-5" id="danhsach">
+            <div class="container my-5" >
                 <div class="row p-4 pb-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-3 p-lg-5 pt-lg-3 tex-lg-start ">
                         <h1 class="display-8 fw-bold lh-1 mb-4">Danh sách học sinh</h1>
                         <p class="fs-5">Danh sách học sinh các khối trường THPT số 1 Tuy Phước. Được lưu trữ số báo danh, họ
                             và tên, lớp và khối.</p>
-                        <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <form action="/coming-soon" target="_blank">
-                                <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Xem</button>
-                            </form>
-                        </div>
                     </div>
                     <div class=" col-lg-4 offset-lg-0 py-3 overflow-hidden shadow-lg rounded">
                         <img class="rounded shadow-lg" src="/img/danh-sach-hs.png" alt="danh-sach" width="100%">
                     </div>
+                    <div class="mt-5 px-lg-5 d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3 text-center">
+                        <form action="/students-list">
+                                <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Xem danh sách</button>
+                        </form>
+                    </div>
                 </div>
             </div>
     
-            <div class="b-example-divider"></div>
+            <div class="b-example-divider mb-5" id="diemdanh"></div>
     
             {{!-- Diểm Danh --}}
-            <div class="container my-5" id="diemdanh">
+            <div class="container my-5">
                 <div class="row p-4 pb-5 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
                     <div class="col-lg-7 p-3 p-lg-5 pt-lg-3 tex-lg-start ">
                         <h1 class="display-8 fw-bold lh-1 mb-4">Điểm danh sỉ số</h1>
                         <p class="fs-5">Điểm danh sỉ số có mặt hoạt động của lớp. Tính năng hoạt động vào 6:00 - 7:00 hoặc 12:00 - 13:00 (tùy vào thời khóa biểu của mỗi lớp admin sẽ thay đổi).</p>
-                        <div class="mt-5 d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                            <form action="/coming-soon">
-                                <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Điểm danh</button>
-                            </form>
-                        </div>
                     </div>
                     <div class="col-lg-4 offset-lg-0 py-3  overflow-hidden shadow-lg rounded">
                         <img class=" shadow-lg rounded" src="/img/AI.jpg" alt="danh-sach" width="100%">
+                    </div>
+                    <div class="mt-5 px-lg-5 text-center d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                        <form action="/attendance">
+                            <button type="submit" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Điểm danh</button>
+                        </form>
                     </div>
                 </div>
             </div>
