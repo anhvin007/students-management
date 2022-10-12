@@ -1,1 +1,77 @@
-<h1>OK</h1>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <style>
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+        .container {
+            margin: auto;
+            width: 800px;
+            height: 350px;
+            position: relative;
+        }
+        #inputVideo {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #overlay {
+            width: 100%;
+            height: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.js"
+        integrity="sha256-JOJ7NmVm2chxYZ1KPcAYd2bwVK7NaFj9QKMp7DClews=" crossorigin="anonymous"></script>
+</head>
+<body>  
+    <div class="container">
+        <video id="inputVideo" autoplay muted></video>
+        <canvas id="overlay" />
+    </div>
+</body>
+
+<script>
+    const videoEl = document.getElementById('inputVideo');
+
+    // load the models
+    async function init() {
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/models')
+        await faceapi.nets.faceRecognitionNet.loadFromUri('/models')
+        await faceapi.nets.faceLandmark68Net.loadFromUri('/models')
+        await faceapi.nets.faceExpressionNet.loadFromUri('/models')
+        navigator.getUserMedia(
+            { video: {} },
+            stream => videoEl.srcObject = stream,
+            err => console.error(err),
+        );
+        Toastify({ text: 'Tải xong model nhận diện!' }).showToast();
+    }
+    init();    
+    
+    videoEl.addEventListener('play', () => {
+        const canvas = document.getElementById('overlay')
+        canvas.style.display = "block"
+        const vidStyleData = videoEl.getBoundingClientRect();
+        const dims = faceapi.matchDimensions(canvas, videoEl, true);
+        dims.height = videoEl.offsetHeight;
+        dims.width = videoEl.offsetWidth;
+        canvas.width = videoEl.offsetWidth;
+        canvas.height = videoEl.offsetHeight;
+
+        setInterval(async () => {
+            const detections = await faceapi.detectAllFaces(videoEl, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+            const resizedDetections = faceapi.resizeResults(detections, dims)
+            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+            faceapi.draw.drawDetections(canvas, resizedDetections,  { withScore: true })
+        }, 100);
+    });
+</script>
