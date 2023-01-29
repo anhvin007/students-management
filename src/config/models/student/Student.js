@@ -12,12 +12,13 @@ const StudentSchema = new Schema({
             gender: String,
             checkin: Boolean,
             late: Boolean,
+            descriptor: String,
         }
     ],
     khoa: Number,
-}, {
-    collection: 'students'
-});
+    }, {
+        collection: 'students'
+    });
 
 
 

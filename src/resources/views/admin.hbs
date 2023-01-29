@@ -1,1 +1,117 @@
-<h1>ok</h1>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../public/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="../../public/css/pages/admin.css">
+    <title>Điểm danh | Admin</title>
+    <style>
+        .shadow-container {
+            box-shadow: 21px 19px 60px 10px rgba(53,12,77,0.71);
+-webkit-box-shadow: 21px 19px 60px 10px rgba(53,12,77,0.71);
+-moz-box-shadow: 21px 19px 60px 10px rgba(53,12,77,0.71);
+        }
+        body {
+            background-image: none;
+        }
+        .border-bottom {
+            border-bottom: 1px solid #fff;
+            padding-bottom: 15px;
+        }
+        .bg-light {
+            background-color: #e6dede;
+        }
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            color: #9c9a9d;
+        }
+    </style>
+</head>
+<body>
+
+    {{> headerAdmin}}
+
+    {{#each dataToday}}
+    <div class="content">
+
+        <div class="container shadow-container rounded-3">
+            <h2 class="mb-4 pt-2 text-center">{{ today }}</h2>
+
+
+            <div class="table-responsive">
+
+                <table class="table table-striped custom-table">
+                    <thead>
+                        <tr class="border-bottom">
+                            <th scope="col">Lớp</th>
+                            <th scope="col">Sỉ số</th>
+                            <th scope="col">Hiện diện</th>
+                            <th scope="col">Vắng</th>
+                            <th scope="col">Đi trễ</th>
+                            {{!-- <th scope="col">Chỉnh sửa</th> --}}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each classes}}
+                        <tr scope="row">
+                            <td>
+                                {{nameClass}}
+                            </td>
+
+                            <td>{{totalStudent}}</td>
+                            <td>
+                                {{totalStudentCheckin}}
+                            </td>
+                            <td>
+                                {{#each listStudentNoCheckin}}
+                                    <p>
+                                        {{sbd}}. {{name}}
+                                    </p>
+                                {{/each}}
+                            </td>
+                            <td>
+                                {{#each listStudentLate}}
+                                <p>
+                                    {{sbd}}. {{name}}
+                                </p>
+                                {{/each}}
+                            </td>
+                            {{!-- <td><a href="#" class="more">Details</a></td> --}}
+                        </tr>
+                        {{/each}}
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+    {{/each}}
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+        integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(function () {
+
+                $('.js-check-all').on('click', function () {
+
+                    if ($(this).prop('checked')) {
+                        $('th input[type="checkbox"]').each(function () {
+                            $(this).prop('checked', true);
+                        })
+                    } else {
+                        $('th input[type="checkbox"]').each(function () {
+                            $(this).prop('checked', false);
+                        })
+                    }
+                });
+
+            });
+    </script>
+</body>

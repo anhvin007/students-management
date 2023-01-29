@@ -1,5 +1,4 @@
 const StudentModel = require('../../../config/models/student/Student');
-const { multipleMongooseToObject } = require('../../../util/mongoose');
 
 
 const EditStudentsController = {

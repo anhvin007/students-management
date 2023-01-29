@@ -8,6 +8,8 @@ async function connect() {
             useUnifiedTopology: true,
         });
         console.log('Connect to database success!');
+
+        
     }
     catch (error) {
         console.log('Connect to database failure!');

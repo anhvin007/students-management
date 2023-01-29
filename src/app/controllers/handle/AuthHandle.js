@@ -1,27 +1,24 @@
 const jwt = require("jsonwebtoken");
 const AccountClassModel = require("../../../config/models/account/Account");
 
-
-
-
 const authController = {
-
     // Generate access token
-    generateAccessToken: (account, id, type) => {
+    generateAccessToken: (account, id, type, nameClass) => {
         return jwt.sign({
             id: id,
             type: type,
+            nameClass: nameClass
         },
         "mk",
-        { expiresIn: "2h" }
+        { expiresIn: "5h" }
         );
     },
-
     // Generate refresh token
-    generateRefreshToken: (account, id, type) => {
+    generateRefreshToken: (account, id, type, nameClass) => {
         return jwt.sign({
             id: id,
             type: type,
+            nameClass: nameClass
         },
         'mk',
         { expiresIn: '365d' });
@@ -29,16 +26,17 @@ const authController = {
 
     // Handle register
     register: async(req, res) => {
-        // const Class = req.body.class;
+        const Class = req.body.class;
         const username = req.body.username;
         const password = req.body.password;
 
         // Create new account
         try {
             const newAccount = await new AccountClassModel({
-                // class: Class,
+                class: Class,
                 username: username,
                 password: password,
+                type: 'class',
             })
 
             // Save to database
@@ -52,31 +50,30 @@ const authController = {
 
     // Handle login
     login: async(req, res, next) => {
+
         const username = req.body.username;
-        const password= req.body.password;
+        const password = req.body.password;
 
         try {
             // Check Account
             const account = await AccountClassModel.findOne({
                 username: username,
                 password: password,
-            });
-            if(account) {
+            }); 
+            if (account) {
                 // jwt
                 const id = account._id;
                 const type = account.type;
-
-                const accessToken = authController.generateAccessToken(account, id, type);
+                const nameClass = account.class.toLowerCase();
+                const accessToken = authController.generateAccessToken(account, id, type, nameClass);
                 res.cookie('accessToken', accessToken, {
                     httpOnly: true,
                     secure: false,
-                    path:'/',
+                    path: '/',
                     sameSite: 'strict',
                 });
-                const {password, ...others} = account._doc;
-                
+                const { password, ...others } = account._doc;
                 res.redirect('/');
-                // res.status(200).json({...others, accessToken});
             }
             else {
                 res.status(404).json('Sai tên tài khoản hoặc mật khẩu!');

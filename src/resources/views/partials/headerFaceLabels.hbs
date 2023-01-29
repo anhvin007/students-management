@@ -1,0 +1,86 @@
+<body class="hero-anime">
+
+    <div class="navigation-wrap bg-light start-header start-style">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="navbar navbar-expand-md navbar-light">
+
+                        <a class="navbar-brand" href="/"><img src="/img/brand.png" alt=""></a>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse flex-row-reverse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ml-auto py-4 py-md-0">
+                                <li class="nav-item px-2 pl-md-0 ml-0 ml-md-4">
+                                    <a class="nav-link" href="/">Trang chủ</a>
+                                </li>
+                                <li class="nav-item px-2 pl-md-0 ml-0 ml-md-4">
+                                    <a class="nav-link" href="/admin">Sỉ số lớp</a>
+                                </li>
+                                <li class="nav-item px-2 pl-md-0 ml-0 ml-md-4">
+                                    <a class="nav-link" href="/face-labels">Nhập ảnh học sinh</a>
+                                </li>
+                                <li class="nav-item px-2 pl-md-0 ml-0 ml-md-4">
+                                    <a class="nav-link" href="/chat-realtime">Kênh chat</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class=" py-5"></div>
+
+
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+    crossorigin="anonymous"></script>
+
+<script>
+
+    (function () {
+
+        $(function () {
+            var header = $(".start-style");
+            $(window).scroll(function () {
+                var scroll = $(window).scrollTop();
+
+                if (scroll >= 10) {
+                    header.removeClass('start-style').addClass("scroll-on");
+                } else {
+                    header.removeClass("scroll-on").addClass('start-style');
+                }
+            });
+        });
+
+
+        //Animation
+
+        $(document).ready(function () {
+            $('body.hero-anime').removeClass('hero-anime');
+        });
+
+        //Menu On Hover
+
+        $('body').on('mouseenter mouseleave', '.nav-item', function (e) {
+            if ($(window).width() > 750) {
+                var _d = $(e.target).closest('.nav-item'); _d.addClass('show');
+                setTimeout(function () {
+                    _d[_d.is(':hover') ? 'addClass' : 'removeClass']('show');
+                }, 1);
+            }
+        });
+
+
+    })(jQuery);
+
+</script>

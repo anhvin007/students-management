@@ -9,30 +9,53 @@ const middlewareController = {
             const token = req.cookies.accessToken;
             const idAndType = jwt.verify(token, 'mk');
             AccountClassModel.findOne({
-                id: idAndType.id
+                id: idAndType.id,
+                type: idAndType.type,
             })
             .then(data => {
-                if(data) {
+                if(data.type === 'class') {
                     req.data = data;
                     next();
                 }
                 else {
-                    res.json('Bạn không có quyền!');
+                    res.json('Chỉ tài khoản lớp học mới được truy cập!');
                 }
             })
             .catch(err => {
+                res.json('Chỉ tài khoản lớp học mới được truy cập!');
             })
 
         }
         catch (err) {
-            // res.status(500).json('Bạn chưa đăng nhập!');
             res.redirect('/login');
         }
     },
 
     // VerifyTokenAdmin
     verifyTokenAdmin(req, res, next) {
-        res.json('hello')
+        try {
+            const token = req.cookies.accessToken;
+            const idAndType = jwt.verify(token, 'mk');
+            AccountClassModel.findOne({
+                id: idAndType.id,
+                type: idAndType.type,
+            })
+                .then(data => {
+                    if (data.type === 'admin') {
+                        req.data = data;
+                        next();
+                    }
+                    else {
+                        res.redirect('/');
+                    }
+                })
+                .catch(err => {
+                    res.redirect('/');
+                })
+        }
+        catch (err) {
+            res.redirect('/');
+        }
     }
 
 };

@@ -1,0 +1,271 @@
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="../../public/fonts/icomoon/style.css">
+    <link rel="stylesheet" href="../../public/css/pages/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="../../public/css/pages/admin.css">
+    <title>Nhập dữ Liệu học sinh | Admin</title>
+    <style type="text/css">
+        body {
+            background-image: none;
+            background-color: rgba(13, 109, 253, 0.003);
+        }
+        #blah {
+            display: none;
+        }
+        .custom-select {
+            position: relative;
+        }
+        .invalid-tooltip {
+            top: 40px;
+            position: absolute;
+        }
+        #container {
+            width: 100%;
+            position: relative;
+
+        }
+        #container img {
+            width: 100%;
+            height: auto;
+        }
+        #container canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        #resultDescriptor[type=text] {
+            color: white;
+            font-size: small;
+        }
+    </style>
+</head>
+
+<body>
+
+    {{> headerFaceLabels}}
+
+    <div class="container">
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="form-row mt-5">
+                <div class="col-md-6 mb-6">
+                    <label for="fullName">Họ và tên</label>
+                    <input type="text" name="fullName" class="form-control" id="validationCustom03" placeholder="ex: Lê Văn Tèo" required>
+                    <div class="invalid-tooltip">
+                        Vui lòng Điền đầy đủ họ tên !!
+                    </div>
+                </div>
+                <div class="col-md-6 mb-6">
+                    <label for="sbd">Số báo danh</label>
+                    <input type="number" name="sbd" class="form-control" id="sbd" placeholder="ex: 10" required>
+                    <div class="invalid-tooltip">
+                        Vui lòng điền số báo danh !!
+                    </div>
+                </div>
+            </div>
+            <div class="form-row mt-5">
+                {{!-- Block --}}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <select id="block" class="custom-select" name="block" required>
+                            <option value="">Chọn khối</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        </select>
+                        <div class="invalid-tooltip">Vui lòng chọn khối !!</div>
+                    </div>
+                </div>
+
+                {{!-- Class --}}
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <select id="Class" class="custom-select" name="Class" required>
+                            <option value="">Chọn lớp</option>
+                            <option value="10ta1">10TA1</option>
+                            <option value="10ta2">10TA2</option>
+                            <option value="10ta3">10TA3</option>
+                            <option value="10ta4">10TA4</option>
+                            <option value="10ta5">10TA5</option>
+                            <option value="10ta6">10TA6</option>
+                            <option value="10ta7">10TA7</option>
+                            <option value="10tb1">10TB1</option>
+                            <option value="10tb2">10TB2</option>
+                            <option value="10tc1">10TC1</option>
+                            <option value="10tc2">10TC2</option>
+                            <option value="10tc3">10TC3</option>
+                            <option value="11a1">11A1</option>
+                            <option value="11a2">11A2</option>
+                            <option value="11a3">11A3</option>
+                            <option value="11a4">11A4</option>
+                            <option value="11a5">11A5</option>
+                            <option value="11a6">11A6</option>
+                            <option value="11a7">11A7</option>
+                            <option value="11a8">11A8</option>
+                            <option value="11a9">11A9</option>
+                            <option value="11a10">11A10</option>
+                            <option value="11a11">11A11</option>
+                            <option value="12a1">12A1</option>
+                            <option value="12a2">12A2</option>
+                            <option value="12a3">12A3</option>
+                            <option value="12a4">12A4</option>
+                            <option value="12a5">12A5</option>
+                            <option value="12a6">12A6</option>
+                            <option value="12a7">12A7</option>
+                            <option value="12a8">12A8</option>
+                            <option value="12a9">12A9</option>
+                            <option value="12a10">12A10</option>
+                            <option value="12a11">12A11</option>
+                        </select>
+                        <div class="invalid-tooltip">Vui lòng chọn lớp !!</div>
+                    </div>
+                </div>
+
+                {{!-- Gender --}}
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <select id="gender" class="custom-select" name="gender" required>
+                            <option value="">Chọn giới tính</option>
+                            <option value="male">Nam</option>
+                            <option value="female">Nữ</option>
+                        </select>
+                        <div class="invalid-tooltip">Vui lòng chọn giới tính !!</div>
+                    </div>
+                </div>
+            </div>    
+
+            {{!-- Upload image --}}
+            <div class="row mt-5">
+                <div class="custom-file">
+                    <input type="file" name="descriptor" class="custom-file-input" id="validatedCustomFile" accept="image/*" required>
+                    <label class="custom-file-label" for="validatedCustomFile">Tải ảnh</label>
+                    <div class="invalid-tooltip">Vui lòng tải ảnh !!</div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <input type="text" name="resultDescriptor" id="resultDescriptor">
+                <div class="justify-content-center containerImage d-flex">
+                </div>
+                <button id="buttonSubmit" class="mt-5 btn btn-primary" type="submit">Gửi thông tin</button>
+                <div class="mt-5"></div>
+            </div>
+        </form>
+    </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.js"
+        integrity="sha256-JOJ7NmVm2chxYZ1KPcAYd2bwVK7NaFj9QKMp7DClews=" crossorigin="anonymous"></script>
+    <script>
+        (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        var checkSubmit = 'mới vào';
+        const containerImage = document.querySelector('.containerImage')
+        const fileInput = document.querySelector('#validatedCustomFile')
+        const buttonSubmit = document.querySelector('#buttonSubmit')
+        var resultDescriptor
+        async function init() {
+            await Promise.all([
+                faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+                faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+                faceapi.nets.tinyFaceDetector.loadFromUri('/models'),])
+            Toastify({
+                text: 'Tải xong model nhận diện!'
+            }).showToast()
+        }
+        init();
+
+        function loadLabeledImages(detection, fullName) {
+                console.log(fullName)
+                const labels = [fullName]
+                return Promise.all(
+                    labels.map(async (label) => {
+                        const descriptions = []
+                        descriptions.push(detection.descriptor)
+                        return new faceapi.LabeledFaceDescriptors(label, descriptions)
+                    })
+                )
+        }    
+
+        fileInput.addEventListener('change', async (e) => {
+            const file = fileInput.files[0]
+            const fullName = document.querySelector('#validationCustom03').value.trim()
+            document.querySelector('#validationCustom03').value = fullName
+            const Class = document.querySelector('#Class').value
+            const block = document.querySelector('#block').value
+            const gender = document.querySelector('#gender').value
+            const sbd = document.querySelector('#sbd').value
+            if(fullName == '' || Class == '' || block == '' || gender == '' || sbd == '') {
+                Toastify({
+                    text: 'Phải điền đầy đủ thông tin bên trên trước rồi mới tải ảnh !!'
+                }).showToast()
+                fileInput.value = ''
+                return
+            }        
+            checkSubmit = 'chưa phân tích xong'
+            const image = await faceapi.bufferToImage(file)
+            containerImage.innerHTML = ''
+            containerImage.append(image)
+            const detection = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor()
+
+            if(!detection) {
+                Toastify({
+                    text: 'Không nhận diện được khuôn mặt. Chọn ảnh khác !!'
+                }).showToast()
+                checkSubmit = 'lỗi nhận dạng'
+                return
+            }
+            
+            const inputDescriptor = document.querySelector('#resultDescriptor')
+            const labeledDescriptors = await loadLabeledImages(detection, sbd + '.' + fullName)
+            //const labeledFaceDescriptorsJson = labeledDescriptors.map(x => x.toJSON())
+            resultDescriptor = await JSON.stringify(labeledDescriptors)
+            inputDescriptor.value = await resultDescriptor.substring(1, resultDescriptor.length - 1)
+            console.log(inputDescriptor.value)
+            checkSubmit = 'ok'
+        
+        }); 
+        buttonSubmit.addEventListener("click", (e) => {
+            if(checkSubmit === 'lỗi nhận dạng') {
+                e.preventDefault();
+                Toastify({
+                    text: 'Không nhận diện được khuôn mặt. Chọn ảnh khác !!'
+                }).showToast()
+            }
+            else if(checkSubmit === 'chưa phân tích xong') {
+                e.preventDefault();
+                Toastify({
+                    text: 'Chưa phân tích ảnh xong !!'
+                }).showToast()
+            }
+            else if (checkSubmit === 'mới vào') {
+                Toastify({
+                    text: 'Nhập thông tin đi đã, bớt vội !!'
+                }).showToast()
+            }
+        });
+    </script>
+</body>

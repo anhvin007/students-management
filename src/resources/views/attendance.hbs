@@ -1,77 +1,253 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <head>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <style>
         body {
+            padding: 0;
             width: 100vw;
             height: 100vh;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
         }
         .container {
-            margin: auto;
-            width: 800px;
-            height: 350px;
-            position: relative;
+            margin-top: 5%;
+            padding-top: 6px;
+            margin-right: auto;
+            margin-left: auto;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
         }
-        #inputVideo {
+        canvas {
+            position: absolute;
+        }
+        #videoInput {
             width: 100%;
             height: auto;
-            position: absolute;
-            top: 0;
-            left: 0;
+        }        
+        .hide-video {
+            display: none;
         }
-        #overlay {
-            width: 100%;
-            height: auto;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 10;
+        .post {
+            display: none;
         }
-    </style>
+</style>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.js"
         integrity="sha256-JOJ7NmVm2chxYZ1KPcAYd2bwVK7NaFj9QKMp7DClews=" crossorigin="anonymous"></script>
 </head>
-<body>  
-    <div class="container">
-        <video id="inputVideo" autoplay muted></video>
-        <canvas id="overlay" />
-    </div>
+<body>      
+        <video id="videoInput" class="hide-video" muted controls></video>
+
+        <div class="px-4 pb-5 mt-5 pt-4 mb-5 rounded-3 border shadow-lg">
+            <h4 class="display-7 fw-bold text-center">Hướng Dẫn học sinh sử dụng</h4>
+            <div class="col-lg-6 mx-auto">
+                <p class="mt-4 lead mb-4 fs-6">● Ấn nút play, sau khi ấn chờ 3-5 giây sau đó điểm danh.</p>
+                <p class="mt-4 lead mb-4 fs-6">● Các thiết bị ram < 4gb hoặc khi mạng yếu, vui lòng chờ 5-10 giây sau khi ấn nút play.</p>
+                <p class="mt-4 lead mb-4 fs-6">● Để điểm danh giữ khoảng cách ít nhất 0.5m, điểm giống phải thấp hơn 0.4 hoặc khung màu đỏ. Để đảm bảo tốc độ cao hệ thống chỉ điểm danh 1 khuôn mặt cùng 1 lúc.</p>
+                <p class="mt-4 lead mb-4 fs-6">● Nếu bị gián đoạn chỉ cần dùng thiết bị vừa sử dụng quay lại điểm danh tiếp thay vì đổi thiết bị phải điểm danh lại từ đầu</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center text-center">
+                    <a href="/contact" class="btn btn-primary btn-lg px-4 gap-3">Liên hệ báo lỗi</a>
+                </div>
+            </div>
+        </div>
+
+
+        {{!-- Modal --}}
+        <form method="POST" class="form post">
+            <input type="text" name="data" class="form-control" id="data">
+            <button id="buttonSubmit" class="btn" type="submit">Gửi dữ liệu</button>
+        </form>
 </body>
 
 <script>
-    const videoEl = document.getElementById('inputVideo');
-
-    // load the models
-    async function init() {
-        await faceapi.nets.tinyFaceDetector.loadFromUri('/models')
-        await faceapi.nets.faceRecognitionNet.loadFromUri('/models')
-        await faceapi.nets.faceLandmark68Net.loadFromUri('/models')
-        await faceapi.nets.faceExpressionNet.loadFromUri('/models')
-        navigator.getUserMedia(
-            { video: {} },
-            stream => videoEl.srcObject = stream,
-            err => console.error(err),
-        );
-        Toastify({ text: 'Tải xong model nhận diện!' }).showToast();
+    if (!window.localStorage) {
+        while(true) {
+            (window.confirm("Trình duyệt này không hỗ trợ vui lòng thoát và đổi trình duyệt khác ")) 
+        }
     }
-    init();    
-    
-    videoEl.addEventListener('play', () => {
-        const canvas = document.getElementById('overlay')
-        canvas.style.display = "block"
-        const vidStyleData = videoEl.getBoundingClientRect();
-        const dims = faceapi.matchDimensions(canvas, videoEl, true);
-        dims.height = videoEl.offsetHeight;
-        dims.width = videoEl.offsetWidth;
-        canvas.width = videoEl.offsetWidth;
-        canvas.height = videoEl.offsetHeight;
 
-        setInterval(async () => {
-            const detections = await faceapi.detectAllFaces(videoEl, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
-            const resizedDetections = faceapi.resizeResults(detections, dims)
-            canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
-            faceapi.draw.drawDetections(canvas, resizedDetections,  { withScore: true })
-        }, 100);
-    });
+    const video = document.getElementById('videoInput')
+
+    // Set up time
+    var classTime = new Date()
+    var endOfClassTime = new Date()
+    classTime.setHours(6, 45, 0)
+    endOfClassTime.setHours(7, 0, 0)
+
+    var students = localStorage.getItem('list-student') ? JSON.parse(localStorage.getItem('list-student')) : JSON.parse(`{{{students}}}`)
+    const nameClass = JSON.parse(`{{{ nameClass }}}`)[0]
+    const indexSortClass = JSON.parse(`{{{ nameClass }}}`)[1]
+    console.log(nameClass)
+
+    var totalStudentCheckin = localStorage.getItem('total-student-checkin') ? localStorage.getItem('total-student-checkin') : 0 
+
+    const descriptorStudents = JSON.parse(`{{{descriptorStudents}}}`)
+    var labeledFaceDescriptors = descriptorStudents.map(x => faceapi.LabeledFaceDescriptors.fromJSON(x))
+    const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors, 0.4)
+
+    // checkin before late
+        function checkinBeforeLate(sbd) {
+            for (let i in students) {
+                if (students[i].sbd == sbd) {
+                    if(students[i].checkin == false) {
+                        students[i].checkin = true
+                        totalStudentCheckin += 1
+                        return true
+                    }
+                    return false
+                }
+            }
+        }
+
+        // checkin after late
+        function checkinAfterLate(sbd) {
+            for (let i in students) {
+                if (students[i].sbd == sbd) {
+                    if(students[i].checkin == false) {
+                        students[i].checkin = true
+                        students[i].late = true
+                        totalStudentCheckin += 1
+                        return true
+                    }
+                    return false
+                }
+            }
+        }
+
+        function filter(arr, criteria) {
+            return arr.filter(function (obj) {
+                return Object.keys(criteria).every(function (c) {
+                    return obj[c] == criteria[c];
+                });
+            });
+        }
+        
+        // function checkFace
+        async function checkFace(bestMatch, currentD) {
+            const distance = (bestMatch.toString(true).split('(')[1].slice(0, -1)) * 1
+            if (distance >= 0.4) return "#ff0c0c"
+
+            // Handle time
+            const sbd = (bestMatch.toString().split('.')[0]) * 1
+            let temp = false
+
+            //  No late
+            if (currentD <= classTime) {
+                temp = checkinBeforeLate(sbd)
+                if(temp == false) return '#00d0ff'
+                localStorage.setItem('list-student', JSON.stringify(students))
+                localStorage.setItem('total-student-checkin', totalStudentCheckin)
+                return '#00d0ff'
+            }
+            // Late
+            else {
+                temp = checkinAfterLate(sbd)
+                if(temp == false) return '#00d0ff'
+                localStorage.setItem('list-student', JSON.stringify(students))
+                localStorage.setItem('total-student-checkin', totalStudentCheckin)
+                return '#00d0ff'
+            }
+        }
+
+    async function checkTimeStopPage(currentD) {
+            // Get data
+            students = localStorage.getItem('list-student') ? JSON.parse(localStorage.getItem('list-student')) : students
+            totalStudentCheckin = localStorage.getItem('total-student-checkin') ? JSON.parse(localStorage.getItem('total-student-checkin')) : 0
+            const listStudentNoCheckin = students.filter(student => {
+                return student.checkin == false
+            })
+            const listStudentLate = students.filter(student => {
+                return student.late == true
+            })
+
+            localStorage.clear();
+
+            const dataToday = {
+                nameClass: nameClass,
+                indexSort: indexSortClass,
+                totalStudent: students.length,
+                totalStudentCheckin: totalStudentCheckin,
+                listStudentNoCheckin: listStudentNoCheckin,
+                listStudentLate: listStudentLate,
+            }
+            let checkConfirm = true
+            if (confirm("Hết giờ điểm danh, ấn Ok để gửi dữ liệu.") == true) {
+            checkConfirm = false
+            const form = document.querySelector('.form')
+            form.classList.remove('post')
+            const inputData = document.querySelector('#data')
+            const data = JSON.stringify(dataToday)
+            console.log(data)
+            inputData.value = data
+            await form.submit()
+            }
+        }
+                        
+    Promise.all([
+        faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+        faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+        faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+    ]).then(start)
+
+    async function start() {
+        Toastify({ text: 'Tải xong model nhận diện!' }).showToast();
+
+        const currentD = new Date();
+        if (currentD >= endOfClassTime) await checkTimeStopPage(currentD)
+        recognizeFaces()
+    }
+
+    async function recognizeFaces() { 
+        // Add video
+        video.classList.remove("hide-video")
+        await navigator.getUserMedia(
+            { video: {} },
+            stream => video.srcObject = stream,
+            err => console.error(err)
+        )
+        console.log('video added')
+
+        video.addEventListener('play', async () => {
+            // Import canvas
+            const canvas = faceapi.createCanvasFromMedia(video)
+            document.body.append(canvas)
+            canvas.style.top = 0 + 'px';
+            canvas.style.left = 0 + 'px';
+
+            console.log('Playing')
+
+            // Setup size
+            const displaySize = { width: video.clientWidth, height: video.clientHeight }
+            faceapi.matchDimensions(canvas, displaySize)
+
+            // auto
+            async function onPlay() {
+                // Stop page
+                const currentAutoD = new Date();
+                if (currentAutoD >= endOfClassTime) checkTimeStopPage(currentAutoD)
+
+                // Check detection
+                const detection = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor()
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+                if (!detection) return
+                    
+                const resizedDetection = faceapi.resizeResults(detection, displaySize)
+                const bestMatch = faceMatcher.findBestMatch(detection.descriptor)
+
+                // check face
+                const boxColor = await checkFace(bestMatch, currentAutoD)
+                const box = resizedDetection.detection.box
+                const options = {
+                    boxColor: boxColor,
+                    label: bestMatch.toString(),
+                }
+                const drawBox = new faceapi.draw.DrawBox(box, options)
+                drawBox.draw(canvas)
+
+                setTimeout(() => onPlay())
+            }
+            for (let i = 1; i > 0; i = 1) await onPlay()        
+        })
+    }           
 </script>

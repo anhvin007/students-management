@@ -10,12 +10,7 @@ class SiteController {
     comingSoon(req, res) {
         res.render('comingSoon');
     }
-
-    // GET /introduce
-    introduce(req, res) {
-        res.render('introduce');
-    }
-
+    
     chatRealTime(req, res) {
         res.render('chatRealTime');
     }

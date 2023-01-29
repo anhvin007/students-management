@@ -14,9 +14,6 @@ class LoginController {
 
         authController.login(req, res, next);
 
-        // res.next();
-        // res.json('you are admin');
-
     }
 
 }

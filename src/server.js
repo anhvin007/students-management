@@ -7,17 +7,23 @@ const handlebars = require('express-handlebars');
 const route = require('./routers/index.js');
 const bodyParser = require('body-parser');
 const db = require('./config/db/index');
-// const session = require('express-session');
 const isProduction = process.env.NODE_ENV === "production";
 const dotenv = require('dotenv');
 dotenv.config();
+const faceapi = require("face-api.js");
+const { Canvas, Image } = require("canvas");
+const canvas = require("canvas");
+const fileUpload = require("express-fileupload");
+faceapi.env.monkeyPatch({ Canvas, Image });
 const app = express();
-// const socketio = require('socket.io');
 const http = require("http");
 const port = process.env.PORT || 7000;
 
 // Use static
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Use fileupload
+app.use(fileUpload({ useTempFiles: true }));
 
 // Attached http server to the socket.io
 const server = http.createServer(app);
@@ -25,7 +31,7 @@ const io = require('socket.io')(server);
 
 // Handle socket.io
 const { addUser, removeUser, getUser,
-    getUsersInRoom } = require("./js/page/kenhChatHandle");
+    getUsersInRoom } = require("./public/js/page/kenhChatHandle");
 var countUserOnline = 2;
 io.on('connection', (socket) => {
     console.log('user connected');    
@@ -97,6 +103,7 @@ io.on('connection', (socket) => {
     });
 });
 
+
 // Connect database
 db.connect();
 
@@ -130,12 +137,17 @@ app.engine('hbs', handlebars.engine({
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
 
-// Use express-session
-// app.use(session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: true,
-//     saveUninitialized: true,
-// }));
+
+// check localStorage
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
+
+if (!localStorage) {
+    res.status(404).json('Trình duyệt này không hỗ trợ vui lòng đổi trình duyệt khác !!')
+}
+
 
 // Use router
 route(app);

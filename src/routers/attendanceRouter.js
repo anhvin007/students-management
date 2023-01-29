@@ -7,6 +7,7 @@ const privateRouter = require('./privateRouter');
 
 // GET /attendance
 attendanceRouter.get('/', privateRouter, attendanceController.index);
+attendanceRouter.post('/', privateRouter, attendanceController.post);
 
 
 
