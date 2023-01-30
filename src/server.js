@@ -12,7 +12,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const faceapi = require("face-api.js");
 const { Canvas, Image } = require("canvas");
-const canvas = require("canvas");
 const fileUpload = require("express-fileupload");
 faceapi.env.monkeyPatch({ Canvas, Image });
 const app = express();
@@ -128,7 +127,7 @@ app.use(cors());
 app.use(cookieParser());
 
 // Use logger 
-app.use(isProduction ? morgan('combined', { stream: accessLogStream }) : morgan('dev'));
+app.use(isProduction ? morgan('combined') : morgan('dev'));
 
 // Use template engine
 app.engine('hbs', handlebars.engine({
