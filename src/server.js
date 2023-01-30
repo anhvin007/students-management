@@ -12,7 +12,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 const faceapi = require("face-api.js");
 const fileUpload = require("express-fileupload");
-faceapi.env.monkeyPatch({ Canvas, Image });
 const app = express();
 const http = require("http");
 const port = process.env.PORT || 7000;
