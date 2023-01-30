@@ -11,7 +11,6 @@ const isProduction = process.env.NODE_ENV === "production";
 const dotenv = require('dotenv');
 dotenv.config();
 const faceapi = require("face-api.js");
-const { Canvas, Image } = require("canvas");
 const fileUpload = require("express-fileupload");
 faceapi.env.monkeyPatch({ Canvas, Image });
 const app = express();
