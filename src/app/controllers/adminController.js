@@ -21,7 +21,7 @@ class adminController {
         
         // Check rank
         const rankToday = currentD.getDay()
-        if (rankToday == 0) res.status(500).json('Trang không hoạt động vào chủ nhật')
+        // if (rankToday == 0) res.status(500).json('Trang không hoạt động vào chủ nhật')
         
         // Get data in database
         var rankData = await (await dataTodayModel.find({}).lean()).filter(ele => ele.classes.length != 0)

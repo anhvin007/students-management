@@ -53,13 +53,14 @@ const authController = {
 
         const username = req.body.username;
         const password = req.body.password;
-
+        console.debug(username, password)
         try {
             // Check Account
             const account = await AccountClassModel.findOne({
                 username: username,
                 password: password,
             }); 
+            console.debug(account)
             if (account) {
                 // jwt
                 const id = account._id;

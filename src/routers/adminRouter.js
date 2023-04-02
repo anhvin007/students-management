@@ -4,6 +4,6 @@ const adminController = require('../app/controllers/adminController');
 const privateAdminRouter = require('./privateRouterAdmin');
 
 
-adminRouter.get('/', adminController.index);
+adminRouter.get('/', privateAdminRouter, adminController.index);
 
 module.exports = adminRouter;

@@ -6,7 +6,7 @@ const dataTodayModel = require('../../config/models/classDataEveryday/classDataE
 var timeOpenPage = new Date()
 var timeClosePage = new Date()
 timeOpenPage.setHours(6, 0, 0)
-timeClosePage.setHours(7, 0, 0)
+timeClosePage.setHours(23, 0, 0)
 
 
 
