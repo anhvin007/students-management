@@ -3,8 +3,8 @@ const dataTodayModel = require('../../config/models/classDataEveryday/classDataE
 // Set up time
 var timeOpenPage = new Date()
 var timeClosePage = new Date()
-timeOpenPage.setHours(7, 10, 0)
-timeClosePage.setHours(23, 50, 0)
+timeOpenPage.setHours(0, 0, 0)
+timeClosePage.setHours(23, 59, 59)
 
 
 class adminController {
@@ -29,7 +29,12 @@ class adminController {
         for(let i = 0; i < rankData.length; ++i) {
             rankData[i].classes.sort((a, b) => a.indexSort - b.indexSort)
             const currentDataDate = rankData[i].classes[0].today
-            rankData[i]["today"] = 'Thứ ' + String(currentDataDate.getDay() + 1) + ' -  Ngày ' + String(currentDataDate.getDate()) + ' -  Tháng ' + String(currentDataDate.getMonth() + 1) + ' -  Năm ' + String(currentDataDate.getFullYear())
+            if (String(currentDataDate.getDay()) == 0) {
+                rankData[i]["today"] = 'Chủ nhật '  + ' -  Ngày ' + String(currentDataDate.getDate()) + ' -  Tháng ' + String(currentDataDate.getMonth() + 1) + ' -  Năm ' + String(currentDataDate.getFullYear())
+            }
+            else {
+                rankData[i]["today"] = 'Thứ ' + String(currentDataDate.getDay() + 1) + ' -  Ngày ' + String(currentDataDate.getDate()) + ' -  Tháng ' + String(currentDataDate.getMonth() + 1) + ' -  Năm ' + String(currentDataDate.getFullYear())
+            }
         }
         
         res.render('admin', { 

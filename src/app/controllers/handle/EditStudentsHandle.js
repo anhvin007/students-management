@@ -31,7 +31,7 @@ const EditStudentsController = {
         try {
             const _idClass = req.params.id;
             const sbd = parseInt(req.params.sbd);
-
+            
             const student = await StudentModel.update(
                 { _id: _idClass },
                 { $pull: { students : { sbd: sbd } } }

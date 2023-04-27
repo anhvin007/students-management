@@ -30,6 +30,12 @@
         .post {
             display: none;
         }
+        .form-control {
+            border: 1px solid #b3b3b300;
+        }
+        .hide {
+            visibility: hidden;
+        }
 </style>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -54,9 +60,11 @@
 
 
         {{!-- Modal --}}
-        <form method="POST" class="form post">
-            <input type="text" name="data" class="form-control" id="data">
-            <button id="buttonSubmit" class="btn" type="submit">Gửi dữ liệu</button>
+        <form method="POST" class="form">
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center text-center">
+                <button id="buttonSubmit" class="btn btn-primary btn-lg px-4 gap-3" type="submit">Gửi dữ liệu</button>
+            </div>
+            <input type="text" name="data" class="hide form-control mt-5" id="data">
         </form>
 </body>
 
@@ -72,8 +80,8 @@
     // Set up time
     var classTime = new Date()
     var endOfClassTime = new Date()
-    classTime.setHours(6, 45, 0)
-    endOfClassTime.setHours(8, 50, 0)
+    classTime.setHours(0, 0, 0)
+    endOfClassTime.setHours(23, 59, 0)
 
     var students = localStorage.getItem('list-student') ? JSON.parse(localStorage.getItem('list-student')) : JSON.parse(`{{{students}}}`)
     const nameClass = JSON.parse(`{{{ nameClass }}}`)[0]
@@ -150,38 +158,53 @@
             }
         }
 
+    function getData(currentD) {
+        // Get data
+        students = localStorage.getItem('list-student') ? JSON.parse(localStorage.getItem('list-student')) : students
+        totalStudentCheckin = localStorage.getItem('total-student-checkin') ? JSON.parse(localStorage.getItem('total-student-checkin')) : 0
+        const listStudentNoCheckin = students.filter(student => {
+            return student.checkin == false
+        })
+        const listStudentLate = students.filter(student => {
+            return student.late == true
+        })
+
+        localStorage.clear();
+
+        const dataToday = {
+            nameClass: nameClass,
+            indexSort: indexSortClass,
+            totalStudent: students.length,
+            totalStudentCheckin: totalStudentCheckin,
+            listStudentNoCheckin: listStudentNoCheckin,
+            listStudentLate: listStudentLate,
+        }
+        return dataToday;
+    }
     async function checkTimeStopPage(currentD) {
-            // Get data
-            students = localStorage.getItem('list-student') ? JSON.parse(localStorage.getItem('list-student')) : students
-            totalStudentCheckin = localStorage.getItem('total-student-checkin') ? JSON.parse(localStorage.getItem('total-student-checkin')) : 0
-            const listStudentNoCheckin = students.filter(student => {
-                return student.checkin == false
-            })
-            const listStudentLate = students.filter(student => {
-                return student.late == true
-            })
+        // getData
+            const dataToday = await getData(currentD)
+            const data = JSON.stringify(dataToday)
+            // Dùng trên Product
+            //if (confirm("Hết giờ điểm danh, ấn Ok để gửi dữ liệu.") == true) {
+            //const form = document.querySelector('.form')
+            //form.classList.remove('post')
+            //const inputData = document.querySelector('#data')
+            //inputData.value = data
+            //await form.submit()
+            //pause();
+            //}
+        }
+    document.getElementById("buttonSubmit").onclick = finish;
 
-            localStorage.clear();
-
-            const dataToday = {
-                nameClass: nameClass,
-                indexSort: indexSortClass,
-                totalStudent: students.length,
-                totalStudentCheckin: totalStudentCheckin,
-                listStudentNoCheckin: listStudentNoCheckin,
-                listStudentLate: listStudentLate,
-            }
-            let checkConfirm = true
-            if (confirm("Hết giờ điểm danh, ấn Ok để gửi dữ liệu.") == true) {
-            checkConfirm = false
+        async function finish() {
+            const currentD = new Date();
+            const dataToday = await getData(currentD)
             const form = document.querySelector('.form')
-            form.classList.remove('post')
             const inputData = document.querySelector('#data')
             const data = JSON.stringify(dataToday)
-            console.log(data)
             inputData.value = data
-            await form.submit()
-            }
+            pause();
         }
                         
     Promise.all([
@@ -194,7 +217,10 @@
         Toastify({ text: 'Tải xong model nhận diện!' }).showToast();
 
         const currentD = new Date();
-        if (currentD >= endOfClassTime) await checkTimeStopPage(currentD)
+        // Chạy trên product
+        //if (currentD >= endOfClassTime) {
+          //  await checkTimeStopPage(currentD)
+        //}
         recognizeFaces()
     }
 
@@ -225,7 +251,9 @@
             async function onPlay() {
                 // Stop page
                 const currentAutoD = new Date();
-                if (currentAutoD >= endOfClassTime) checkTimeStopPage(currentAutoD)
+
+                // Chạy trên product
+                //if (currentAutoD >= endOfClassTime) checkTimeStopPage(currentAutoD)
 
                 // Check detection
                 const detection = await faceapi.detectSingleFace(video, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor()

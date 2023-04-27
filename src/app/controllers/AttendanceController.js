@@ -5,8 +5,8 @@ const dataTodayModel = require('../../config/models/classDataEveryday/classDataE
 // Set up time
 var timeOpenPage = new Date()
 var timeClosePage = new Date()
-timeOpenPage.setHours(6, 0, 0)
-timeClosePage.setHours(23, 0, 0)
+timeOpenPage.setHours(0, 0, 0)
+timeClosePage.setHours(23, 59, 59)
 
 
 
@@ -63,7 +63,7 @@ class AttendanceController {
         try {
             // Check rank
             const rank = currentD.getDay()
-            if(rank == 0) res.redirect('/')
+            // if(rank == 0) res.redirect('/')
             const rankData = await dataTodayModel.find({ rank: rank })
 
             // Check empty
@@ -83,7 +83,7 @@ class AttendanceController {
                 { rank: rank },
                 { $push: { "classes": data } })
 
-            res.redirect('/')
+            await res.redirect('/')
             
         }
         catch (err){
