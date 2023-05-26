@@ -3,6 +3,7 @@ async function connect(key) {
 
 
     try {
+        mongoose.set("strictQuery", false);
         await mongoose.connect('mongodb+srv://trananhvin77:'+key+'@pmst.ifntthz.mongodb.net/checkin-students', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
