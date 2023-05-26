@@ -13,8 +13,10 @@ const middlewareController = {
                 type: idAndType.type,
             })
             .then(data => {
+                console.debug(data)
+                console.debug(data.type)
                 if(data.type === 'class') {
-                    req.data = data;
+                    req.data = data;bb
                     next();
                 }
                 else {
@@ -42,6 +44,8 @@ const middlewareController = {
                 type: idAndType.type,
             })
                 .then(data => {
+                    console.debug(data)
+                    console.debug(data.type)
                     if (data.type === 'admin') {
                         req.data = data;
                         next();
