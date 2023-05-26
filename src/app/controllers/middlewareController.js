@@ -16,7 +16,7 @@ const middlewareController = {
                 console.debug(data)
                 console.debug(data.type)
                 if(data.type === 'class') {
-                    req.data = data;bb
+                    req.data = data;
                     next();
                 }
                 else {
