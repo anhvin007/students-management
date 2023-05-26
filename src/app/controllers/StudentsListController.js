@@ -4,7 +4,7 @@ class SiteController {
 
     // GET /students-list
     index(req, res) {
-
+        
         editStudentsHandle.getAllStudents(req, res);
     }
 

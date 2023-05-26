@@ -15,10 +15,16 @@ const EditStudentsController = {
                     return a.sbd - b.sbd;
                 });
             }
-            
+            const token = req.cookies.accessToken;
+            let checkToken;
+            if (token)
+                checkToken = true;
+            else
+                checkToken = false;
             // render page and send classArray
             res.render('students-list', { 
-                Class: classArray
+                Class: classArray,
+                token: checkToken,
             });
         }
         catch (err){

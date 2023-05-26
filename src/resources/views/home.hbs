@@ -9,7 +9,11 @@
 <body class="flex-column h-100">
     
     <div class=" container pb-5">
-        {{> header}}
+        {{#if token}}
+            {{> headerNotLogin}}
+        {{else}}
+            {{> header}}
+        {{/if}}
         <main class="d-flex flex-column">
             <h1 class="visually-hidden">Heroes examples</h1>
 

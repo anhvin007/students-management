@@ -9,8 +9,7 @@ const bodyParser = require('body-parser');
 const db = require('./config/db/index');
 const isProduction = process.env.NODE_ENV === "production";
 const dotenv = require('dotenv');
-dotenv.config();
-const faceapi = require("face-api.js");
+dotenv.config({path:"./.env"});
 const fileUpload = require("express-fileupload");
 const app = express();
 const http = require("http");
@@ -102,7 +101,8 @@ io.on('connection', (socket) => {
 
 
 // Connect database
-db.connect();
+const keyDatabase = process.env.KEY_DATABASE;
+db.connect(keyDatabase);
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))

@@ -91,7 +91,11 @@
 }
 </style>
 
+{{#if token}}
+{{> headerStudentsListNotLogin}}
+{{else}}
 {{> headerStudentsList}}
+{{/if}}
 
 <div class="container py-1 mb-5">
     <div class="row gy-4 equal" data-masonry='{"percentPosition": true }'>

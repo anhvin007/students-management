@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
-async function connect() {
+async function connect(key) {
 
 
     try {
-        await mongoose.connect('mongodb+srv://trananhvin77:o10uGBfUdD0xdC8i@pmst.ifntthz.mongodb.net/checkin-students', {
+        await mongoose.connect('mongodb+srv://trananhvin77:'+key+'@pmst.ifntthz.mongodb.net/checkin-students', {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });

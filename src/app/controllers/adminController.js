@@ -15,9 +15,7 @@ class adminController {
         try {
         // Check time
         const currentD = new Date()
-        if (currentD < timeOpenPage || currentD >= timeClosePage) {
-            res.status(500).json('Chưa tới lúc trang hoạt động')
-        }
+        //if (currentD < timeOpenPage || currentD >= timeClosePage) {res.status(500).json('Chưa tới lúc trang hoạt động')}
         
         // Check rank
         const rankToday = currentD.getDay()
