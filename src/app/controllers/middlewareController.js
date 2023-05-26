@@ -18,6 +18,7 @@ const middlewareController = {
                     next();
                 }
                 else {
+                    
                     res.json('Chỉ tài khoản lớp học mới được truy cập!');
                 }
             })
