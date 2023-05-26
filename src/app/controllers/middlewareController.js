@@ -4,11 +4,11 @@ const AccountClassModel = require('../../config/models/account/Account');
 const middlewareController = {
 
     // VerifyTokenUser
-    verifyToken(req, res, next) {
+    async verifyToken(req, res, next) {
         try {
             const token = req.cookies.accessToken;
             const idAndType = jwt.verify(token, 'mk');
-            AccountClassModel.findOne({
+            await AccountClassModel.findOne({
                 id: idAndType.id,
                 type: idAndType.type,
             })
@@ -33,11 +33,11 @@ const middlewareController = {
     },
 
     // VerifyTokenAdmin
-    verifyTokenAdmin(req, res, next) {
+    async verifyTokenAdmin(req, res, next) {
         try {
             const token = req.cookies.accessToken;
             const idAndType = jwt.verify(token, 'mk');
-            AccountClassModel.findOne({
+            await AccountClassModel.findOne({
                 id: idAndType.id,
                 type: idAndType.type,
             })
