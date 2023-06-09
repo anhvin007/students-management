@@ -41,10 +41,11 @@ class AttendanceController {
         let descriptors = ''
         for(let i = 0; i < students.length; ++i) {
             let descriptor = students[i].descriptor
+            if(descriptor === undefined)
+                continue
             descriptors += descriptor + ','
         }
         descriptors = '[' + descriptors.substring(0, descriptors.length - 1) + ']'
-        
         res.render('attendance', {
             nameClass: JSON.stringify([nameClass, objectClass[0].rank]),                                                  
             students: limitStudents,

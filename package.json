@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.22"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.6",
