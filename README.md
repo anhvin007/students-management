@@ -9,7 +9,7 @@ visit site: https://students-management-production.up.railway.app/
 ..
 ![This is an image](/examples/home.jpg)
 
-![This is an image](/examples/student-list.jpg)
+![This is an image](/examples/student-list.png)
 
 ![This is an image](/examples/attendance.jpg)
 
